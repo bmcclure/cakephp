@@ -165,7 +165,11 @@ class CakePlugin {
 
 		$bootstrap = (array)$config['bootstrap'];
 		foreach ($bootstrap as $file) {
-			include $path . 'Config' . DS . $file . '.php';
+			$file = $path . 'Config' . DS . $file . '.php';
+			
+			if (file_exists($file)) {
+				include $file;
+			}
 		}
 
 		return true;
@@ -189,7 +193,14 @@ class CakePlugin {
 		if ($config['routes'] === false) {
 			return false;
 		}
-		return (bool) include self::path($plugin) . 'Config' . DS . 'routes.php';
+		
+		$file = self::path($plugin) . 'Config' . DS . 'routes.php';
+		
+		if ($exists = file_exists($file)) {
+			include $file;
+		}
+		
+		return ($exists) 
 	}
 
 /**
